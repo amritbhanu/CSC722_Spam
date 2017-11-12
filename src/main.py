@@ -37,20 +37,21 @@ if __name__ == '__main__':
     ## preprocessing
     # spam_preprocess()
 
-    labels, corpus=readcsv()
+    labels, data=readcsv()
 
     ## Featurizatoin method
     features=[term_frequency,tf_idf,hashing,lda]
-    learners=[run_dt,run_rf,run_svmlinear,run_svmrbf,log_reg,knn,naive_bayes]
+    learners=[run_dt,run_rf,log_reg,knn,naive_bayes,run_svmlinear,run_svmrbf]
+
     final={}
-    for i in features[:1]:
+    for i in features:
         print(i.__name__)
         temp={}
-        corpus,vocab=i(corpus)
-        skf = StratifiedKFold(n_splits=10)
-        for k in learners[:1]:
+        corpus,vocab=i(data)
+        for k in learners:
             l=[]
             print(k.__name__)
+            skf = StratifiedKFold(n_splits=10)
             for train_index, test_index in skf.split(corpus, labels):
                 train_data, train_labels = corpus[train_index], labels[train_index]
                 test_data, test_labels = corpus[test_index], labels[test_index]
