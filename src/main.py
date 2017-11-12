@@ -10,6 +10,9 @@ from Preprocess import *
 import numpy as np
 from featurization import *
 from random import seed
+from sklearn.model_selection import StratifiedKFold
+from ML import *
+import pickle
 
 def processing(x):
     return process(x, string_lower, email_urls, punctuate_preproc,
@@ -38,8 +41,22 @@ if __name__ == '__main__':
 
     ## Featurizatoin method
     features=[term_frequency,tf_idf,hashing,lda]
-
+    learners=[run_dt,run_rf,run_svmlinear,run_svmrbf,log_reg,knn,naive_bayes]
+    final={}
     for i in features[:1]:
+        print(i.__name__)
+        temp={}
         corpus,vocab=i(corpus)
-
-
+        skf = StratifiedKFold(n_splits=10)
+        for k in learners[:1]:
+            l=[]
+            print(k.__name__)
+            for train_index, test_index in skf.split(corpus, labels):
+                train_data, train_labels = corpus[train_index], labels[train_index]
+                test_data, test_labels = corpus[test_index], labels[test_index]
+                value=k(train_data, train_labels, test_data, test_labels)
+                l.append(value)
+            temp[k.__name__]=l
+        final[i.__name__]=temp
+    with open('../dump/spam_nosmote.pickle', 'wb') as handle:
+        pickle.dump(final, handle)
