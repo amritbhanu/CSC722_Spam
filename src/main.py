@@ -40,8 +40,10 @@ if __name__ == '__main__':
     labels, data=readcsv()
 
     ## Featurizatoin method
+    # features=[term_frequency]
     features=[term_frequency,tf_idf,hashing,lda]
     learners=[run_dt,run_rf,log_reg,knn,naive_bayes,run_svmlinear,run_svmrbf]
+    # learners=[hmm]
 
     final={}
     for i in features:
@@ -57,6 +59,7 @@ if __name__ == '__main__':
                 test_data, test_labels = corpus[test_index], labels[test_index]
                 value=k(train_data, train_labels, test_data, test_labels)
                 l.append(value)
+            print(l)
             temp[k.__name__]=l
         final[i.__name__]=temp
     with open('../dump/spam_nosmote.pickle', 'wb') as handle:

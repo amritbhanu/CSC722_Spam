@@ -13,6 +13,7 @@ from sklearn.metrics import f1_score
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.naive_bayes import GaussianNB
+from hmmlearn.hmm import GaussianHMM
 
 def run_dt(train_data,train_labels,test_data,test_labels):
     model = DecisionTreeClassifier().fit(train_data, train_labels)
@@ -48,3 +49,9 @@ def knn(train_data,train_labels,test_data,test_labels):
     model = KNeighborsClassifier(n_neighbors=8).fit(train_data, train_labels)
     prediction = model.predict(test_data)
     return f1_score(test_labels, prediction,pos_label='spam')
+
+def hmm(train_data,train_labels,test_data,test_labels):
+    model = GaussianHMM(n_components=2, covariance_type="full").fit(train_data)
+    prediction = model.predict(test_data)
+    return f1_score(test_labels, prediction,pos_label='spam')
+
