@@ -14,6 +14,9 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.naive_bayes import GaussianNB
 from hmmlearn.hmm import GaussianHMM
+from sklearn.neural_network import MLPClassifier
+from sklearn.ensemble import BaggingClassifier
+from sklearn.ensemble import AdaBoostClassifier
 
 def run_dt(train_data,train_labels,test_data,test_labels):
     model = DecisionTreeClassifier().fit(train_data, train_labels)
@@ -54,4 +57,20 @@ def hmm(train_data,train_labels,test_data,test_labels):
     model = GaussianHMM(n_components=2, covariance_type="full").fit(train_data)
     prediction = model.predict(test_data)
     return f1_score(test_labels, prediction,pos_label='spam')
+
+def neural_net(train_data,train_labels,test_data,test_labels):
+    model = MLPClassifier().fit(train_data, train_labels)
+    prediction = model.predict(test_data)
+    return f1_score(test_labels, prediction,pos_label='spam')
+
+def bagging(train_data,train_labels,test_data,test_labels):
+    model = BaggingClassifier(DecisionTreeClassifier()).fit(train_data, train_labels)
+    prediction=model.predict(test_data)
+    return f1_score(test_labels, prediction,pos_label='spam')
+
+def adaboost(train_data,train_labels,test_data,test_labels):
+    model = AdaBoostClassifier(DecisionTreeClassifier()).fit(train_data, train_labels)
+    prediction=model.predict(test_data)
+    return f1_score(test_labels, prediction,pos_label='spam')
+
 

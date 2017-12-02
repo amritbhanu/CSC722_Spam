@@ -39,11 +39,13 @@ if __name__ == '__main__':
 
     labels, data=readcsv()
 
-    ## Featurizatoin method
-    # features=[term_frequency]
-    features=[term_frequency,tf_idf,hashing,lda]
-    learners=[run_dt,run_rf,log_reg,knn,naive_bayes,run_svmlinear,run_svmrbf]
+    ## Featurization method
+    # features=[hashing]
     # learners=[hmm]
+    features=[term_frequency,tf_idf,hashing,lda]
+    learners=[run_dt,run_rf,log_reg,knn,naive_bayes, \
+        run_svmlinear,run_svmrbf,neural_net,bagging,adaboost]
+    
 
     final={}
     for i in features:
