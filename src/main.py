@@ -36,7 +36,7 @@ if __name__ == '__main__':
     seed(1)
     np.random.seed(1)
     ## preprocessing
-    # spam_preprocess()
+    spam_preprocess()
 
     labels, data=readcsv()
 
