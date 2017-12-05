@@ -1,0 +1,5 @@
+features,knn,bagging,run_svmrbf,run_rf,log_reg,run_svmlinear,naive_bayes,neural_net,run_dt,adaboost
+lda,0.66,0.85,0.0,0.84,0.64,0.7,0.55,0.86,0.77,0.87
+term_frequency,0.51,0.88,0.0,0.89,0.92,0.92,0.62,0.93,0.87,0.86
+tf_idf,0.84,0.88,0.0,0.87,0.83,0.92,0.61,0.92,0.86,0.85
+hashing,0.81,0.85,0.0,0.87,0.83,0.88,0.35,0.87,0.83,0.82

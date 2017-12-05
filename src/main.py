@@ -41,14 +41,13 @@ if __name__ == '__main__':
     labels, data=readcsv()
 
     ## Featurization method
-    # features=[hashing]
-    # learners=[hmm]
     features=[term_frequency,tf_idf,hashing,lda]
     learners=[run_dt,run_rf,log_reg,knn,naive_bayes, \
         run_svmlinear,run_svmrbf,neural_net,bagging,adaboost]
     sm = SMOTE()
 
     final={}
+    print("With SMOTE")
     for i in features:
         print(i.__name__)
         temp={}
@@ -63,12 +62,13 @@ if __name__ == '__main__':
                 test_data, test_labels = corpus_smote[test_index], labels_smote[test_index]
                 value=k(train_data, train_labels, test_data, test_labels)
                 l.append(value)
-            print(l)
             temp[k.__name__]=l
         final[i.__name__]=temp
     with open('../dump/spam_yessmote.pickle', 'wb') as handle:
         pickle.dump(final, handle)
 
+    final = {}
+    print("Without SMOTE")
     for i in features:
         print(i.__name__)
         temp={}
@@ -82,7 +82,6 @@ if __name__ == '__main__':
                 test_data, test_labels = corpus_smote[test_index], labels_smote[test_index]
                 value=k(train_data, train_labels, test_data, test_labels)
                 l.append(value)
-            print(l)
             temp[k.__name__]=l
         final[i.__name__]=temp
     with open('../dump/spam_nosmote.pickle', 'wb') as handle:

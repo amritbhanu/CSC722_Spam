@@ -29,12 +29,12 @@ def run_rf(train_data,train_labels,test_data,test_labels):
     return f1_score(test_labels, prediction,pos_label='spam')
 
 def run_svmlinear(train_data,train_labels,test_data,test_labels):
-    model = SVC(kernel='linear').fit(train_data, train_labels)
+    model = SVC(kernel='linear', cache_size=20000).fit(train_data, train_labels)
     prediction = model.predict(test_data)
     return f1_score(test_labels, prediction,pos_label='spam')
 
 def run_svmrbf(train_data,train_labels,test_data,test_labels):
-    model = SVC(kernel='rbf').fit(train_data, train_labels)
+    model = SVC(kernel='rbf', cache_size=20000).fit(train_data, train_labels)
     prediction = model.predict(test_data)
     return f1_score(test_labels, prediction,pos_label='spam')
 
@@ -49,7 +49,7 @@ def log_reg(train_data,train_labels,test_data,test_labels):
     return f1_score(test_labels, prediction,pos_label='spam')
 
 def knn(train_data,train_labels,test_data,test_labels):
-    model = KNeighborsClassifier(n_neighbors=8).fit(train_data, train_labels)
+    model = KNeighborsClassifier(n_neighbors=8,n_jobs=-1).fit(train_data, train_labels)
     prediction = model.predict(test_data)
     return f1_score(test_labels, prediction,pos_label='spam')
 
@@ -63,8 +63,9 @@ def neural_net(train_data,train_labels,test_data,test_labels):
     prediction = model.predict(test_data)
     return f1_score(test_labels, prediction,pos_label='spam')
 
+## Using Decision Tree Classifier
 def bagging(train_data,train_labels,test_data,test_labels):
-    model = BaggingClassifier(DecisionTreeClassifier()).fit(train_data, train_labels)
+    model = BaggingClassifier(DecisionTreeClassifier(),n_jobs=-1).fit(train_data, train_labels)
     prediction=model.predict(test_data)
     return f1_score(test_labels, prediction,pos_label='spam')
 
