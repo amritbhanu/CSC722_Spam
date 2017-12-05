@@ -44,7 +44,6 @@ if __name__ == '__main__':
     features=[term_frequency,tf_idf,hashing,lda]
     learners=[run_dt,run_rf,log_reg,knn,naive_bayes, \
         run_svmlinear,run_svmrbf,neural_net,bagging,adaboost]
-    sm = SMOTE()
 
     final={}
     print("With SMOTE")
@@ -52,14 +51,17 @@ if __name__ == '__main__':
         print(i.__name__)
         temp={}
         corpus,vocab=i(data)
-        corpus_smote,labels_smote = sm.fit_sample(corpus,labels)
         for k in learners:
             l=[]
             print(k.__name__)
             skf = StratifiedKFold(n_splits=10)
-            for train_index, test_index in skf.split(corpus_smote, labels_smote):
-                train_data, train_labels = corpus_smote[train_index], labels_smote[train_index]
-                test_data, test_labels = corpus_smote[test_index], labels_smote[test_index]
+            for train_index, test_index in skf.split(corpus, labels):
+                train_data, train_labels = corpus[train_index], labels[train_index]
+                ## SMOTE
+                sm = SMOTE()
+                train_data, train_labels = sm.fit_sample(train_data, train_labels)
+
+                test_data, test_labels = train_data[test_index], train_labels[test_index]
                 value=k(train_data, train_labels, test_data, test_labels)
                 l.append(value)
             temp[k.__name__]=l
@@ -78,8 +80,8 @@ if __name__ == '__main__':
             print(k.__name__)
             skf = StratifiedKFold(n_splits=10)
             for train_index, test_index in skf.split(corpus, labels):
-                train_data, train_labels = corpus_smote[train_index], labels_smote[train_index]
-                test_data, test_labels = corpus_smote[test_index], labels_smote[test_index]
+                train_data, train_labels = corpus[train_index], labels[train_index]
+                test_data, test_labels = corpus[test_index], labels[test_index]
                 value=k(train_data, train_labels, test_data, test_labels)
                 l.append(value)
             temp[k.__name__]=l
