@@ -12,6 +12,7 @@ from featurization import *
 from random import seed
 from sklearn.model_selection import StratifiedKFold
 from ML import *
+from imblearn.over_sampling import SMOTE 
 import pickle
 
 def processing(x):
@@ -45,24 +46,25 @@ if __name__ == '__main__':
     features=[term_frequency,tf_idf,hashing,lda]
     learners=[run_dt,run_rf,log_reg,knn,naive_bayes, \
         run_svmlinear,run_svmrbf,neural_net,bagging,adaboost]
-    
+    sm = SMOTE(random_state=42)
 
     final={}
     for i in features:
         print(i.__name__)
         temp={}
         corpus,vocab=i(data)
+        corpus_smote,labels_smote = sm.fit_sample(corpus,labels)
         for k in learners:
             l=[]
             print(k.__name__)
             skf = StratifiedKFold(n_splits=10)
-            for train_index, test_index in skf.split(corpus, labels):
-                train_data, train_labels = corpus[train_index], labels[train_index]
-                test_data, test_labels = corpus[test_index], labels[test_index]
+            for train_index, test_index in skf.split(corpus_smote, labels_smote):
+                train_data, train_labels = corpus_smote[train_index], labels_smote[train_index]
+                test_data, test_labels = corpus_smote[test_index], labels_smote[test_index]
                 value=k(train_data, train_labels, test_data, test_labels)
                 l.append(value)
             print(l)
             temp[k.__name__]=l
         final[i.__name__]=temp
-    with open('../dump/spam_nosmote.pickle', 'wb') as handle:
+    with open('../dump/spam_yessmote.pickle', 'wb') as handle:
         pickle.dump(final, handle)
