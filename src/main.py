@@ -25,7 +25,6 @@ def spam_preprocess():
     df.drop(df.columns[2:],axis=1,inplace=True)
     df['v2']=df['v2'].apply(lambda x: processing(x))
     df.to_csv('../data/processed_spam.csv', index=False)
-    print(df)
 
 def readcsv():
     path='../data/processed_spam.csv'
